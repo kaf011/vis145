@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image-Scent Decoder</title>
+  <!-- Bootstrap CSS Stylesheet -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <link href="css/1.css" rel="stylesheet">
+  <!-- <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style> -->
+  <!-- google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Special+Elite&display=swap" rel="stylesheet">
+  <!-- p5.gs -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+  <!-- ml5.js -->
+  <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+  <!-- Color thief -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+
+  <!-- p5.js sketch -->
+  <script src="js/sketch.js"></script>
+
+</head>
+
+<body>
+  <div class="container" style="position:relative; top:20px;">
+
+
+
+    <div>
+      <a href="index.html"><button type="button" class="btn btn-dark btn-lg back-btn">Back</button></a>
+    </div>
+    <div class="step" align="center">
+      <h2>Image-Scent Decoder</h2>
+      <h3>You smell like...</h3>
+      <h3 class="smell">take a picture to discover the scent</h3>
+
+      <div class="photo" align="center" display="inline-block">
+        <video id="player" width=240 height=180 controls autoplay playsinline></video>
+        <button class="btn photo-btn" id="capture" style="margin: 15px;">=></button>
+
+        <canvas id="snapshot" width=240 height=180></canvas>
+        <img style="display:none" src="" alt="">
+      </div>
+    </div>
+    <hr>
+    <!-- <input id="photo" type="file" name="uploader" id="uploader" accept="image/*" capture="camera" />
+      <p></p>
+      <input id="upload" type="submit" value="Upload">
+      <canvas id="snapshot" width=240 height=180></canvas> -->
+    <!-- <form action="upload.htm" method="post" enctype="multipart/form-data">
+	        <input type="file" accept="image/*" capture>
+	        <input type="submit" value="Upload">
+        </form> -->
+    <!-- </div>
+
+    </div> -->
+</body>
+<script src="https://code.jquery.com/jquery.js"></script>
+<script>
+  var player = document.getElementById('player');
+  var snapshotCanvas = document.getElementById('snapshot');
+  var captureButton = document.getElementById('capture');
+  var rgb = {
+    r: 0,
+    g: 0,
+    b: 0
+  };
+  var colors = [{
+      r: 128,
+      g: 0,
+      b: 0,
+      name: "brick"
+    },
+    {
+      r: 204,
+      g: 110,
+      b: 100,
+      name: "roses"
+    },
+    {
+      r: 255,
+      g: 99,
+      b: 71,
+      name: "tomato"
+    },
+    {
+      r: 255,
+      g: 99,
+      b: 71,
+      name: "tomato"
+    },
+    {
+      r: 220,
+      g: 128,
+      b: 114,
+      name: "salmon"
+    },
+    {
+      r: 255,
+      g: 160,
+      b: 122,
+      name: "salmon"
+    },
+    {
+      r: 255,
+      g: 140,
+      b: 0,
+      name: "sweet orange"
+    },
+    {
+      r: 255,
+      g: 185,
+      b: 120,
+      name: "orange"
+    },
+    {
+      r: 255,
+      g: 215,
+      b: 0,
+      name: "gold"
+    },
+    {
+      r: 128,
+      g: 128,
+      b: 0,
+      name: "olive"
+    },
+    {
+      r: 255,
+      g: 255,
+      b: 0,
+      name: "lemon"
+    },
+    {
+      r: 238,
+      g: 214,
+      b: 112,
+      name: "lemon"
+    },
+    {
+      r: 245,
+      g: 222,
+      b: 180,
+      name: "lemon"
+    },
+    {
+      r: 154,
+      g: 205,
+      b: 50,
+      name: "grass"
+    },
+    {
+      r: 175,
+      g: 212,
+      b: 111,
+      name: "lemon grass"
+    },
+    {
+      r: 85,
+      g: 107,
+      b: 47,
+      name: "leaves"
+    },
+    {
+      r: 133,
+      g: 165,
+      b: 128,
+      name: "seaweed"
+    },
+    {
+      r: 120,
+      g: 170,
+      b: 188,
+      name: "sea salt"
+    },
+    {
+      r: 34,
+      g: 139,
+      b: 34,
+      name: "forest"
+    },
+    {
+      r: 50,
+      g: 205,
+      b: 50,
+      name: "lime"
+    },
+    {
+      r: 152,
+      g: 251,
+      b: 150,
+      name: "mint"
+    },
+    {
+      r: 50,
+      g: 80,
+      b: 80,
+      name: "sea"
+    },
+    {
+      r: 100,
+      g: 149,
+      b: 237,
+      name: "corn flower"
+    },
+    {
+      r: 100,
+      g: 149,
+      b: 237,
+      name: "corn flower"
+    },
+    {
+      r: 0,
+      g: 191,
+      b: 255,
+      name: "sky"
+    },
+    {
+      r: 224,
+      g: 255,
+      b: 255,
+      name: "clouds"
+    },
+    {
+      r: 25,
+      g: 25,
+      b: 112,
+      name: "midnight sky"
+    },
+    {
+      r: 138,
+      g: 43,
+      b: 226,
+      name: "blue violet"
+    },
+    {
+      r: 225,
+      g: 20,
+      b: 147,
+      name: "a Barbe doll"
+    },
+    {
+      r: 206,
+      g: 182,
+      b: 193,
+      name: "candies"
+    },
+    {
+      r: 238,
+      g: 130,
+      b: 238,
+      name: "lily"
+    },
+    {
+      r: 225,
+      g: 192,
+      b: 203,
+      name: "cherry blossom"
+    },
+    {
+      r: 220,
+      g: 172,
+      b: 163,
+      name: "peach"
+    },
+    {
+      r: 138,
+      g: 43,
+      b: 226,
+      name: "blue violet"
+    },
+    {
+      r: 192,
+      g: 133,
+      b: 173,
+      name: "grapes"
+    },
+    {
+      r: 255,
+      g: 250,
+      b: 205,
+      name: "wheat"
+    },
+    {
+      r: 209,
+      g: 172,
+      b: 163,
+      name: "milk tea"
+    },
+    {
+      r: 255,
+      g: 235,
+      b: 205,
+      name: "almond milk"
+    },
+    {
+      r: 112,
+      g: 128,
+      b: 144,
+      name: "slate"
+    },
+    {
+      r: 160,
+      g: 135,
+      b: 130,
+      name: "cappuccino"
+    },
+    {
+      r: 160,
+      g: 82,
+      b: 45,
+      name: "chocolate"
+    },
+    {
+      r: 151,
+      g: 76,
+      b: 75,
+      name: "red velvet cake"
+    },
+    {
+      r: 230,
+      g: 230,
+      b: 250,
+      name: "lavendar"
+    },
+    {
+      r: 255,
+      g: 228,
+      b: 225,
+      name: "peach"
+    },
+    {
+      r: 240,
+      g: 240,
+      b: 240,
+      name: "smoke"
+    },
+    {
+      r: 255,
+      g: 250,
+      b: 250,
+      name: "snow"
+    }
+  ];
+
+  var handleSuccess = function(stream) {
+    // Attach the video stream to the video element and autoplay.
+    player.srcObject = stream;
+  };
+
+  captureButton.addEventListener('click', function() {
+    var context = snapshot.getContext('2d');
+
+    // Draw the video frame to the canvas.
+    context.drawImage(player, 0, 0, snapshotCanvas.width,
+      snapshotCanvas.height);
+
+
+
+    var num = 0;
+    var imgData = context.getImageData(0, 0, snapshotCanvas.width, snapshotCanvas.height);
+
+    for (var i = 0; i < imgData.data.length; i += 4) {
+      num++;
+      rgb.r += imgData.data[i];
+      rgb.g += imgData.data[i + 1];
+      rgb.b += imgData.data[i + 2];
+
+    }
+    rgb.r = ~~(rgb.r / num) + 50;
+    rgb.g = ~~(rgb.g / num) + 50;
+    rgb.b = ~~(rgb.b / num) + 50;
+    var rgbStr = "rgb(" + rgb.r + "," + rgb.g + "," + rgb.b + ")";
+    $('body').css("background-color", rgbStr);
+
+
+    var nearestIndex = 0;
+    var nearestOffset = 1000;
+    for (var j = 0; j < colors.length; j += 1) {
+      var offset = abs(rgb.r - colors[j].r) + abs(rgb.g - colors[j].g) + abs(rgb.b - colors[j].b);
+      if (offset < nearestOffset) {
+        nearestOffset = offset;
+        nearestIndex = j;
+      }
+
+    }
+    console.log(colors[nearestIndex].name);
+    console.log(colors[nearestIndex].r + ", " + colors[nearestIndex].g + ", " + colors[nearestIndex].b);
+    console.log(rgb.r + ", " + rgb.g + ", " + rgb.b);
+    //$(".smell h3").html = "h";
+    $(".smell").html(colors[nearestIndex].name);
+
+    //
+    //   const colorThief = new ColorThief();
+    //   const imgg = document.querySelector('canvas');
+    //
+    //   // Make sure image is finished loading
+    //   if (imgg.complete) {
+    //     console.log(
+    //       colorThief.getColor(sourceImage));
+    //     console.log(
+    //       colorThief.getPalette(sourceImage)
+    //     );
+    //   } else {
+    //     console.log("failed");
+    //   }
+  });
+
+  navigator.mediaDevices.getUserMedia({
+      video: true
+    })
+    .then(handleSuccess);
+</script>
+
+<script>
+
+</script>
+
+
+
+
+</html>

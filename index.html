@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <title>Home Page</title>
+  <meta charset="utf-8">
+  <link href="css/home.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Special+Elite&display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Merriweather|Montserrat|Nothing+You+Could+Do|Sacramento&display=swap" rel="stylesheet"> -->
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+
+</head>
+
+<body>
+  <div class="container">
+    <h1>
+      Scent Archive
+    </h1>
+
+    <div class="col3">
+      <a href="1.html"><img class="img" id="img1" src="images/1'.svg" alt=""></a>
+      <p class="description1" style="display: none; text-align:center;">Image-Scent Decoder</p>
+    </div>
+    <div class="col3">
+      <a href="2.html"><img class="img" id="img2" src="images/2'.svg" alt=""></a>
+      <p class="description2" style="display: none; text-align:center;">Scent Pool</p>
+    </div>
+    <div class="col3">
+      <a href="3.html"><img class="img" id="img3" src="images/3.svg" alt=""></a>
+      <p class="description3" style="display: none; text-align:center;">My Archive</p>
+    </div>
+
+
+
+  </div>
+
+</body>
+<script src="https://code.jquery.com/jquery.js"></script>
+<script>
+  $(document).ready(function() {
+
+    //
+    $('h1').hover(function() {
+      $('#img1, #img2, #img3').removeClass('img-unselected');
+
+      // $('#img1').attr("src", "images/1'.svg");
+      // $('#img2').attr("src", "images/2'.svg");
+      // $('#img3').attr("src", "images/3.svg");
+
+
+    });
+
+    $('#img1').hover(function() {
+      $(this).attr("src", "images/1.svg");
+      $('#img1').removeClass('img-unselected');
+      // $('.col3').removeClass("col5");
+      // $('.col3').addClass("col2");
+      // $(this).closest("div").addClass("col5");
+      $('#img2').attr("src", "images/2'.svg");
+      $('#img3').attr("src", "images/3.svg");
+      $('#img2, #img3').addClass('img-unselected');
+      $('.description1').fadeToggle();
+    });
+    $("#img2").hover(function() {
+      $(this).attr("src", "images/2.svg");
+      $('#img2').removeClass('img-unselected');
+      // $('.col3').removeClass("col5");
+      // $('.col3').addClass("col2");
+      // $(this).closest("div").addClass("col5");
+      $('#img1').attr("src", "images/1'.svg");
+      $('#img3').attr("src", "images/3.svg");
+      $('#img1, #img3').addClass('img-unselected');
+      $('.description2').fadeToggle();
+    });
+    $("#img3").hover(function() {
+      $(this).attr("src", "images/3'.svg");
+      $('#img3').removeClass('img-unselected');
+      // $('.col3').removeClass("col5");
+      // $('.col3').addClass("col2");
+      // $(this).closest("div").addClass("col5");
+      $('#img1').attr("src", "images/1'.svg");
+      $('#img2').attr("src", "images/2'.svg");
+      $('#img1, #img2').addClass('img-unselected');
+      $('.description3').fadeToggle();
+    });
+  });
+</script>
+
+</html>

@@ -1,0 +1,46 @@
+h1 {
+  /* font-size: 5.625rem; */
+  /*=90px = 562.5%= 5.625em;  16px = 100% = 1em; root em ignore the parent size*/
+  margin: 100px auto 100px auto;
+  /*margin:0 auto 0 auto;*/
+  /* same way as text-aligh:center;*/
+  /* font-family: 'Lekton', sans-serif; */
+  font-family: 'Special Elite', cursive;
+  color: #5B6156;
+  /* line-height: 2; */
+}
+
+body {
+  background-color: #f7f4e3;
+  margin: 0;
+  text-align: center;
+  font-family: 'Special Elite', cursive;
+  color: #40514E;
+}
+
+.img {
+  width: 80%;
+}
+
+.img:hover {
+  width: 90%;
+}
+
+.img-unselected {
+  opacity: 40%;
+}
+
+.col3 {
+  width: 33%;
+  float: left;
+}
+
+.col2 {
+  width: 30%;
+  float: left;
+}
+
+.col5 {
+  width: 40%;
+  float: left;
+}
